@@ -83,6 +83,31 @@ int main (int argc, char** argv){
         */
     //signal looks good for now( remember to attach images)
 
+    //processing the denoised signal
+    /*notes show that the structure of a uart signal is
+        -idles at a high
+        -a falling edge followed by a low half bit.
+        - followed by highs and lows (translates to 0s and 1s)
+        -can be start at LSB or MSB try both????  
+    */  
+    //From denoised signal plot, its seems then signal low is -0.2V and high is 3.2V
+    //is (-0.2+3.2)/2 a good start to convert to 0 and 1s????
+
+    //apply a threshold (stick to q1 and q7 quantiles for now as researched)
+    vector<double> t= Voltage_s;
+    nth_element(t.begin(), t.begin()+t.size()/4, t.end());
+    double q1 = t[t.size()/4]; //25% of values are below this value
+
+    nth_element(t.begin(), t.begin()+(3*t.size())/4, t.end());
+    double q3 = t[3*t.size()/4]; //25% of values are above this value
+
+    double threshold = (q1+q3)/2;
+    
+
+    
+    
+
+
     return 1;
 
 }
